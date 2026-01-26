@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // backend URL
+  baseURL: "https://lab2market-backend.vercel.app/api", // backend URL
 });
 
 // Attach JWT token to every request if exists
