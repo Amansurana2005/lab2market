@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 // Configure CORS to allow your deployed frontend (set FRONTEND_URL in env)
-const FRONTEND_URL = "https://lab2market-one.vercel.app/";
+const FRONTEND_URL = "https://lab2market-one.vercel.app";
 const corsOptions = {
   origin: FRONTEND_URL,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
