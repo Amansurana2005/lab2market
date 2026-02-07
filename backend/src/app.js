@@ -5,7 +5,7 @@ const app = express();
 
 // Configure CORS to allow your deployed frontend (set FRONTEND_URL in env)
 // Use process.env.FRONTEND_URL so Render (or other hosts) can set the allowed origin.
-const FRONTEND_URL = process.env.FRONTEND_URL || "https://lab2market-one.vercel.app";
+const FRONTEND_URL = process.env.FRONTEND_URL || "*";
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (like server-to-server or curl)
