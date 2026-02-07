@@ -1,0 +1,30 @@
+services:
+  # Backend API Service
+  - type: web
+    name: lab2market-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/health
+    
+  # Frontend React App Service  
+  - type: web
+    name: lab2market-frontend
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: VITE_API_URL
+        value: https://lab2market-backend.onrender.com/api
+    publicDir: dist
