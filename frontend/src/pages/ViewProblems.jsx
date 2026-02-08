@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import Navbar from "../components/NavBar";
+import Footer from "../components/Footer";
+import EmptyState from "../components/EmptyState";
 
 export default function ViewProblems() {
   const [problems, setProblems] = useState([]);
@@ -45,16 +47,24 @@ export default function ViewProblems() {
               <div className="text-gray-500">Loading problems...</div>
             </div>
           ) : problems.length === 0 ? (
-            <div className="rounded-lg bg-white p-8 text-center shadow">
-              <h3 className="text-lg font-semibold text-gray-700">
-                No problems posted yet
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Check back soon for new industry challenges
-              </p>
+            <div>
+              <EmptyState type="no_problems" />
+              <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="font-semibold text-blue-900 mb-2">How we review problems</h3>
+                <p className="text-sm text-blue-800">
+                  All problem statements are reviewed to ensure clarity and relevance before being visible to researchers. This helps maintain quality and respect everyone's time.
+                </p>
+              </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div>
+              <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="font-semibold text-blue-900 mb-2">How we review problems</h3>
+                <p className="text-sm text-blue-800">
+                  All problem statements are reviewed to ensure clarity and relevance before being visible to researchers. This helps maintain quality and respect everyone's time.
+                </p>
+              </div>
+              <div className="space-y-4">
               {problems.map((problem) => (
                 <div
                   key={problem._id}
@@ -158,10 +168,12 @@ export default function ViewProblems() {
                   </div>
                 </div>
               </div>
+              </div>
             </div>
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

@@ -3,6 +3,8 @@ import API from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import SECTORS from "../constants/sectors";
+import Footer from "../components/Footer";
+import Navbar from "../components/NavBar";
 
 export default function PostProblem() {
   const { user } = useContext(AuthContext);
@@ -48,11 +50,21 @@ export default function PostProblem() {
   };
 
   return (
-    <div className="min-h-screen py-10 px-4">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Post a Problem</h2>
-        {error && <div className="text-red-600 mb-3">{error}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gray-50 py-10 px-4">
+        <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-semibold mb-4">Post a Problem</h2>
+          
+          <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 className="font-semibold text-blue-900 mb-2 text-sm">Before you post</h3>
+            <p className="text-sm text-blue-800">
+              All problem statements are reviewed to ensure clarity and relevance before being visible to researchers. This helps maintain quality and respect everyone's time.
+            </p>
+          </div>
+          
+          {error && <div className="text-red-600 mb-3">{error}</div>}
+          <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Title</label>
             <input
@@ -118,8 +130,10 @@ export default function PostProblem() {
               Cancel
             </button>
           </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }

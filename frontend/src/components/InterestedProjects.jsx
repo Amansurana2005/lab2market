@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import Navbar from "./NavBar";
+import Footer from "./Footer";
+import EmptyState from "./EmptyState";
 
 export default function InterestedProjects() {
   const [projects, setProjects] = useState([]);
@@ -58,20 +60,13 @@ export default function InterestedProjects() {
               <div className="text-gray-500">Loading projects...</div>
             </div>
           ) : projects.length === 0 ? (
-            <div className="rounded-lg bg-white p-8 text-center shadow">
-              <h3 className="text-lg font-semibold text-gray-700">
-                No interested projects yet
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Browse and express interest in projects to see them here
-              </p>
-              <button
+            <EmptyState type="no_interested_projects" actionButton={<button
                 onClick={() => navigate("/dashboard")}
                 className="mt-4 rounded-md bg-[#2a73d9] px-6 py-2 text-white hover:bg-[#1f66ca]"
               >
                 Explore Projects
-              </button>
-            </div>
+              </button>}
+            />
           ) : (
             <div className="space-y-4">
               {projects.map((project) => (
@@ -131,6 +126,7 @@ export default function InterestedProjects() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

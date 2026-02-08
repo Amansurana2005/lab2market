@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
+import EmptyState from "../EmptyState";
 
 export default function ResearcherProjects({ refreshTrigger }) {
   const [projects, setProjects] = useState([]);
@@ -87,7 +88,7 @@ export default function ResearcherProjects({ refreshTrigger }) {
     return (
       <div className="researcher-section">
         <h3>Your Projects</h3>
-        <p className="muted">You haven't created any projects yet.</p>
+        <EmptyState type="no_projects_researcher" />
       </div>
     );
 

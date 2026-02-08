@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api/axios";
 import Navbar from "../components/NavBar";
+import Footer from "../components/Footer";
+import EmptyState from "../components/EmptyState";
 import { useNavigate } from "react-router-dom";
 import SECTORS from "../constants/sectors";
 
@@ -111,14 +113,13 @@ export default function IndustryProblems() {
               <div className="text-gray-500">Loading...</div>
             </div>
           ) : problems.length === 0 ? (
-            <div className="rounded-lg bg-white p-8 text-center shadow">
-              <h3 className="text-lg font-semibold text-gray-700">
-                No problems posted yet
-              </h3>
-              <p className="text-gray-500 mt-2">
-                Click "Post New Problem" to get started
-              </p>
-            </div>
+            <EmptyState type="no_problems" actionButton={<button
+                onClick={() => navigate("/post-problem")}
+                className="mt-4 rounded-md bg-[#2a73d9] px-6 py-2 text-white hover:bg-[#1f66ca]"
+              >
+                Post Your First Problem
+              </button>}
+            />
           ) : (
             <div className="space-y-4">
               {problems.map((problem) =>
@@ -265,6 +266,7 @@ export default function IndustryProblems() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

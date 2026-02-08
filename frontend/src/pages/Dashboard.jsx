@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/NavBar";
+import Footer from "../components/Footer";
 import CreateProject from "../components/Projects/CreateProject";
 import ProjectList from "../components/Projects/ProjectList";
 import ResearcherProjects from "../components/Projects/ResearcherProjects";
@@ -201,6 +202,7 @@ export default function Dashboard() {
         {/* Chat Modal */}
         {showChat && <Chat closeChat={() => setShowChat(false)} />}
       </div>
+      <Footer />
     </div>
   );
 }
