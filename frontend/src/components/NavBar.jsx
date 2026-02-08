@@ -54,14 +54,7 @@ export default function Navbar() {
               Interested Projects
             </Link>
           )}
-          {user && user.role === "researcher" && (
-            <Link
-              to="#"
-              className={location.pathname === "#" ? "font-bold" : ""}
-            >
-              Explore Projects
-            </Link>
-          )}
+          {/* Explore Projects removed (redundant) */}
           {user && user.role === "admin" && (
             <Link
               to="#"
