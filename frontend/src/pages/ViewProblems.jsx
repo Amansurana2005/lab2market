@@ -3,6 +3,8 @@ import API from "../api/axios";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import EmptyState from "../components/EmptyState";
+import LoadingCard from "../components/LoadingCard";
+import Toast from "../components/Toast";
 
 export default function ViewProblems() {
   const [problems, setProblems] = useState([]);
@@ -11,6 +13,7 @@ export default function ViewProblems() {
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [showToast, setShowToast] = useState(null);
 
   useEffect(() => {
     fetchProblems(page);
@@ -19,11 +22,14 @@ export default function ViewProblems() {
   const fetchProblems = async (pageNum) => {
     try {
       setLoading(true);
+      setError("");
       const res = await API.get("/problems", { params: { page: pageNum, limit: 10 } });
       setProblems(res.data.data || res.data);
       setTotalPages(res.data.pages || 1);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch problems");
+      const errorMsg = err.response?.data?.message || "Failed to fetch problems";
+      setError(errorMsg);
+      setShowToast({ message: errorMsg, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -34,20 +40,26 @@ export default function ViewProblems() {
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Industry Problems</h1>
+          <h1 className="text-3xl font-bold mb-2" id="page-title">Industry Problems</h1>
           <p className="text-gray-600 mb-8">
             Browse problems posted by industry and propose solutions
           </p>
 
           {error && (
-            <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6">
+            <div
+              className="rounded border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6"
+              role="alert"
+              aria-live="polite"
+            >
               {error}
             </div>
           )}
 
           {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="text-gray-500">Loading problems...</div>
+            <div className="space-y-4" aria-busy="true" aria-label="Loading problems">
+              {[...Array(3)].map((_, i) => (
+                <LoadingCard key={i} />
+              ))}
             </div>
           ) : problems.length === 0 ? (
             <div>
@@ -69,10 +81,11 @@ export default function ViewProblems() {
               </div>
               <div className="space-y-4">
                 {problems.map((problem) => (
-                  <div
+                  <button
                     key={problem._id}
-                    className="rounded-lg bg-white p-6 shadow hover:shadow-md transition cursor-pointer"
+                    className="rounded-lg bg-white p-6 shadow hover:shadow-md transition w-full text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={() => setSelectedProblem(problem)}
+                    aria-label={`View details for ${problem.title}`}
                   >
                     <h3 className="text-xl font-semibold text-gray-900">
                       {problem.title}
@@ -95,25 +108,27 @@ export default function ViewProblems() {
                         </span>
                       )}
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
               {totalPages > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
+                <div className="mt-8 flex justify-center gap-2" role="navigation" aria-label="Pagination">
                   <button
                     onClick={() => setPage(Math.max(1, page - 1))}
                     disabled={page === 1}
                     className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+                    aria-label="Previous page"
                   >
                     Previous
                   </button>
-                  <span className="px-4 py-2 text-gray-700">
+                  <span className="px-4 py-2 text-gray-700" aria-current="page">
                     Page {page} of {totalPages}
                   </span>
                   <button
                     onClick={() => setPage(Math.min(totalPages, page + 1))}
                     disabled={page === totalPages}
                     className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+                    aria-label="Next page"
                   >
                     Next
                   </button>
@@ -124,15 +139,21 @@ export default function ViewProblems() {
 
           {/* Problem Details Modal */}
           {selectedProblem && (
-            <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div
+              className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              role="dialog"
+              aria-labelledby="modal-title"
+              aria-modal="true"
+            >
               <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
                 <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
-                  <h2 className="text-2xl font-bold text-gray-900">
+                  <h2 id="modal-title" className="text-2xl font-bold text-gray-900">
                     {selectedProblem.title}
                   </h2>
                   <button
                     onClick={() => setSelectedProblem(null)}
                     className="text-gray-500 hover:text-gray-700 text-2xl"
+                    aria-label="Close dialog"
                   >
                     ✕
                   </button>
@@ -198,6 +219,13 @@ export default function ViewProblems() {
         </div>
       </div>
       <Footer />
+      {showToast && (
+        <Toast
+          message={showToast.message}
+          type={showToast.type}
+          duration={3000}
+        />
+      )}
     </>
   );
 }

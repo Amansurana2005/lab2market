@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
+import LoadingCard from "../LoadingCard";
+import Toast from "../Toast";
 
 export default function ProjectList({ filters = {} }) {
   const { user } = useContext(AuthContext);
@@ -9,17 +11,24 @@ export default function ProjectList({ filters = {} }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(null);
 
   useEffect(() => {
     // Only fetch all projects for investors or admins
     if (!user || (user.role !== "investor" && user.role !== "admin")) return;
     const fetchProjects = async () => {
       try {
+        setLoading(true);
         const res = await API.get("/projects", { params: { page, limit: 10 } });
         setProjects(res.data.data || res.data);
         setTotalPages(res.data.pages || 1);
       } catch (err) {
+        const errorMsg = err.response?.data?.message || "Failed to fetch projects";
+        setShowToast({ message: errorMsg, type: "error" });
         console.error(err.response?.data);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProjects();
@@ -115,23 +124,32 @@ export default function ProjectList({ filters = {} }) {
           detail: { researcherId },
         })
       );
+      setShowToast({ message: "Interest expressed successfully!", type: "success" });
     } catch (err) {
       console.error("Error expressing interest:", err);
-      alert("Failed to express interest");
+      const errorMsg = err.response?.data?.message || "Failed to express interest";
+      setShowToast({ message: errorMsg, type: "error" });
     }
   };
 
   const list = filtered;
 
   return (
-    <div className="project-grid">
-      {list.map((p) => (
+    <div className="project-grid" role="region" aria-label="Projects list" aria-busy={loading}>
+      {loading && (
+        <div className="space-y-4 col-span-1 md:col-span-2 lg:col-span-3" aria-label="Loading projects">
+          {[...Array(3)].map((_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
+      {!loading && list.map((p) => (
         <div key={p._id} className="project-card">
           <div className="project-card-media">
             {p.imageUrl ? (
-              <img src={p.imageUrl} alt="thumb" />
+              <img src={p.imageUrl} alt="Project thumbnail: {p.title}" />
             ) : (
-              <div className="placeholder-img" />
+              <div className="placeholder-img" aria-hidden="true" />
             )}
           </div>
 
@@ -169,21 +187,23 @@ export default function ProjectList({ filters = {} }) {
       ))}
 
       {totalPages > 1 && (
-        <div className="my-8 flex justify-center gap-2">
+        <div className="my-8 flex justify-center gap-2" role="navigation" aria-label="Pagination">
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
             className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+            aria-label="Previous page"
           >
             Previous
           </button>
-          <span className="px-4 py-2 text-gray-700">
+          <span className="px-4 py-2 text-gray-700" aria-current="page">
             Page {page} of {totalPages}
           </span>
           <button
             onClick={() => setPage(Math.min(totalPages, page + 1))}
             disabled={page === totalPages}
             className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+            aria-label="Next page"
           >
             Next
           </button>
@@ -192,14 +212,20 @@ export default function ProjectList({ filters = {} }) {
 
       {/* Project Details Modal */}
       {selectedProject && (
-        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          role="dialog"
+          aria-labelledby="project-modal-title"
+          aria-modal="true"
+        >
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 id="project-modal-title" className="text-2xl font-bold text-gray-900">
                 {selectedProject.title}
               </h2>
               <button
                 onClick={() => setSelectedProject(null)}
+                aria-label="Close dialog"
                 className="text-gray-500 hover:text-gray-700 text-2xl"
               >
                 ✕
@@ -301,7 +327,12 @@ export default function ProjectList({ filters = {} }) {
             </div>
           </div>
         </div>
-      )}
-    </div>
+      )}      {showToast && (
+        <Toast
+          message={showToast.message}
+          type={showToast.type}
+          duration={3000}
+        />
+      )}    </div>
   );
 }
