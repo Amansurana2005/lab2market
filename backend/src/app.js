@@ -27,6 +27,8 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
+// Problems (industry-posted)
+app.use("/api/problems", require("./routes/problemRoutes"));
 
 app.get("/", (req, res) => {
   res.send("Lab2Market Backend Running 🚀");
