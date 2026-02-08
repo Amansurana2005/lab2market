@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -12,6 +13,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const validate = () => {
     if (!form.email) return "Email is required";
@@ -35,7 +37,7 @@ export default function Login() {
       });
 
       loginUser(res.data.token, res.data.role, res.data.name);
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Check credentials."
@@ -112,9 +114,9 @@ export default function Login() {
           Remember me
         </label>
 
-        <a href="/forgot" className="text-sm text-[#2a73d9] hover:underline">
+        <Link to="/forgot" className="text-sm text-[#2a73d9] hover:underline">
           Forgot?
-        </a>
+        </Link>
       </div>
 
       {/* Submit */}
@@ -130,9 +132,9 @@ export default function Login() {
       {/* Signup */}
       <div className="pt-2 text-center text-sm text-gray-600">
         Don&apos;t have an account?{" "}
-        <a href="/signup" className="text-[#2a73d9] hover:underline">
+        <Link to="/signup" className="text-[#2a73d9] hover:underline">
           Create one
-        </a>
+        </Link>
       </div>
     </form>
   );

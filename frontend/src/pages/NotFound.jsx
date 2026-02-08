@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 text-center">
@@ -9,12 +11,12 @@ export default function NotFound() {
         The page you are looking for doesn’t exist or may have been moved.
       </p>
 
-      <a
-        href="/"
+      <Link
+        to="/"
         className="mt-6 inline-block rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700"
       >
         Go back home
-      </a>
+      </Link>
     </div>
   );
 }

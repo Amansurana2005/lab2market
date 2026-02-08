@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -16,6 +17,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export default function Register() {
         password: form.password,
       });
       loginUser(loginRes.data.token, loginRes.data.role);
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } catch (err) {
       console.error(err.response?.data);
       setError(err.response?.data?.message || "Registration failed");
@@ -196,9 +198,9 @@ export default function Register() {
       {/* Already have account */}
       <div className="pt-2 text-center text-sm text-gray-600">
         Already have an account?{" "}
-        <a href="/login" className="text-[#2a73d9] hover:underline">
+        <Link to="/login" className="text-[#2a73d9] hover:underline">
           Sign in
-        </a>
+        </Link>
       </div>
     </form>
   );
