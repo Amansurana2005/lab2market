@@ -16,8 +16,26 @@ exports.createProject = async (req, res) => {
 
 exports.getProjects = async (req, res) => {
   try {
-    const projects = await Project.find().populate("createdBy", "name role");
-    res.json(projects);
+    // Pagination & optional search
+    const page = Math.max(1, parseInt(req.query.page || "1"));
+    const limit = Math.min(100, parseInt(req.query.limit || "20"));
+    const search = req.query.q;
+    const filter = {};
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { abstract: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const total = await Project.countDocuments(filter);
+    const projects = await Project.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("createdBy", "name role");
+
+    res.json({ data: projects, total, page, pages: Math.ceil(total / limit) });
   } catch (err) {
     console.error("getProjects error:", err);
     res.status(500).json({ message: "Server error" });
