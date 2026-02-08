@@ -1,7 +1,10 @@
 import Navbar from "../components/NavBar";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
+  const { user } = useContext(AuthContext);
   return (
     <>
       <Navbar />
@@ -19,19 +22,32 @@ export default function Home() {
           </p>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              to="/post-problem"
-              className="inline-block rounded-xl bg-white px-6 py-2 text-[#1363d4] font-medium"
-            >
-              Post a Problem
-            </Link>
+            {!user && (
+              <Link
+                to="/post-problem"
+                className="inline-block rounded-xl bg-white px-6 py-2 text-[#1363d4] font-medium"
+              >
+                Post a Problem
+              </Link>
+            )}
 
-            <Link
-              to="/signup"
-              className="inline-block rounded-xl bg-transparent border border-white px-6 py-2 text-white font-medium"
-            >
-              Join as a Researcher
-            </Link>
+            {!user && (
+              <Link
+                to="/signup"
+                className="inline-block rounded-xl bg-transparent border border-white px-6 py-2 text-white font-medium"
+              >
+                Join as a Researcher
+              </Link>
+            )}
+
+            {user && (
+              <Link
+                to="/dashboard"
+                className="inline-block rounded-xl bg-white px-6 py-2 text-[#1363d4] font-medium"
+              >
+                Go to Dashboard
+              </Link>
+            )}
           </div>
         </div>
       </section>
