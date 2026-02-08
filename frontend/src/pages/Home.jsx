@@ -17,22 +17,6 @@ export default function Home() {
             creating meaningful partnerships that drive innovation from
             laboratory to market.
           </p>
-
-          <div className="mt-8 flex justify-center gap-6">
-            <button
-              className="cursor-pointer rounded-xl bg-[#1363d4] px-8 py-3 font-semibold text-white 
-             transition-all hover:shadow-xl hover:shadow-blue-900/30"
-            >
-              I'm a Researcher
-            </button>
-
-            <button
-              className="cursor-pointer rounded-xl bg-white px-8 py-3 font-semibold text-[#1363d4]
-             transition-all hover:shadow-xl hover:shadow-blue-900/30"
-            >
-              I'm an Investor
-            </button>
-          </div>
         </div>
       </section>
       {/* featured carousel removed */}
