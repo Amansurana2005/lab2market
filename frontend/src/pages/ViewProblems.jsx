@@ -9,16 +9,19 @@ export default function ViewProblems() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedProblem, setSelectedProblem] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    fetchProblems();
-  }, []);
+    fetchProblems(page);
+  }, [page]);
 
-  const fetchProblems = async () => {
+  const fetchProblems = async (pageNum) => {
     try {
       setLoading(true);
-      const res = await API.get("/problems");
-      setProblems(res.data);
+      const res = await API.get("/problems", { params: { page: pageNum, limit: 10 } });
+      setProblems(res.data.data || res.data);
+      setTotalPages(res.data.pages || 1);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch problems");
     } finally {
@@ -95,6 +98,27 @@ export default function ViewProblems() {
                   </div>
                 ))}
               </div>
+              {totalPages > 1 && (
+                <div className="mt-8 flex justify-center gap-2">
+                  <button
+                    onClick={() => setPage(Math.max(1, page - 1))}
+                    disabled={page === 1}
+                    className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+                  >
+                    Previous
+                  </button>
+                  <span className="px-4 py-2 text-gray-700">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPage(Math.min(totalPages, page + 1))}
+                    disabled={page === totalPages}
+                    className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           )}
 

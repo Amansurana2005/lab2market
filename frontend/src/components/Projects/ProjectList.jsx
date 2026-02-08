@@ -7,20 +7,23 @@ export default function ProjectList({ filters = {} }) {
   const [projects, setProjects] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     // Only fetch all projects for investors or admins
     if (!user || (user.role !== "investor" && user.role !== "admin")) return;
     const fetchProjects = async () => {
       try {
-        const res = await API.get("/projects");
-        setProjects(res.data);
+        const res = await API.get("/projects", { params: { page, limit: 10 } });
+        setProjects(res.data.data || res.data);
+        setTotalPages(res.data.pages || 1);
       } catch (err) {
         console.error(err.response?.data);
       }
     };
     fetchProjects();
-  }, [user]);
+  }, [user, page]);
 
   useEffect(() => {
     // basic filtering: if search inputs exist in DOM (rendered by Dashboard), read them
@@ -164,6 +167,28 @@ export default function ProjectList({ filters = {} }) {
           </div>
         </div>
       ))}
+
+      {totalPages > 1 && (
+        <div className="my-8 flex justify-center gap-2">
+          <button
+            onClick={() => setPage(Math.max(1, page - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 text-gray-700">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage(Math.min(totalPages, page + 1))}
+            disabled={page === totalPages}
+            className="px-4 py-2 rounded border border-gray-300 text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Project Details Modal */}
       {selectedProject && (
