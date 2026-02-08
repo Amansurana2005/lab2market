@@ -65,35 +65,36 @@ export default function ViewProblems() {
                 </p>
               </div>
               <div className="space-y-4">
-              {problems.map((problem) => (
-                <div
-                  key={problem._id}
-                  className="rounded-lg bg-white p-6 shadow hover:shadow-md transition cursor-pointer"
-                  onClick={() => setSelectedProblem(problem)}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {problem.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    By {problem.createdBy?.name}
-                  </p>
-                  <p className="text-gray-700 mt-3 line-clamp-2">
-                    {problem.description}
-                  </p>
-                  <div className="mt-3 flex gap-2 text-xs">
-                    {problem.sector && (
-                      <span className="px-2 py-1 bg-gray-100 rounded">
-                        {problem.sector}
-                      </span>
-                    )}
-                    {problem.location && (
-                      <span className="px-2 py-1 bg-gray-100 rounded">
-                        {problem.location}
-                      </span>
-                    )}
+                {problems.map((problem) => (
+                  <div
+                    key={problem._id}
+                    className="rounded-lg bg-white p-6 shadow hover:shadow-md transition cursor-pointer"
+                    onClick={() => setSelectedProblem(problem)}
+                  >
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {problem.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      By {problem.createdBy?.name}
+                    </p>
+                    <p className="text-gray-700 mt-3 line-clamp-2">
+                      {problem.description}
+                    </p>
+                    <div className="mt-3 flex gap-2 text-xs">
+                      {problem.sector && (
+                        <span className="px-2 py-1 bg-gray-100 rounded">
+                          {problem.sector}
+                        </span>
+                      )}
+                      {problem.location && (
+                        <span className="px-2 py-1 bg-gray-100 rounded">
+                          {problem.location}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
 
