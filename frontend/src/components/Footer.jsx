@@ -28,6 +28,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/contact" className="hover:text-white transition">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
                 <Link to="/dashboard" className="hover:text-white transition">
                   Dashboard
                 </Link>

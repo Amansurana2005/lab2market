@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import PostProblem from "./pages/PostProblem";
 import ViewProblems from "./pages/ViewProblems";
 import IndustryProblems from "./pages/IndustryProblems";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import EditProfile from "./components/EditProfile";
 import InterestedProjects from "./components/InterestedProjects";
@@ -24,9 +25,11 @@ function App() {
           <Route path="/post-problem" element={<PostProblem />} />
           <Route path="/problems" element={<ViewProblems />} />
           <Route path="/my-problems" element={<IndustryProblems />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/interested-projects" element={<InterestedProjects />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </AuthProvider>
