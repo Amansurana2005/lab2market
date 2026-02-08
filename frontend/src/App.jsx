@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import PostProblem from "./pages/PostProblem";
 import NotFound from "./pages/NotFound";
 import EditProfile from "./components/EditProfile";
 import InterestedProjects from "./components/InterestedProjects";
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/post-problem" element={<PostProblem />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/interested-projects" element={<InterestedProjects />} />
           <Route path="/dashboard" element={<Dashboard />} />
