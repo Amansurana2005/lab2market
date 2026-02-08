@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import API from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import SECTORS from "../constants/sectors";
 
 export default function PostProblem() {
   const { user } = useContext(AuthContext);
@@ -76,11 +77,19 @@ export default function PostProblem() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium">Sector</label>
-              <input
+              <select
+                required
                 value={form.sector}
                 onChange={(e) => setForm({ ...form, sector: e.target.value })}
                 className="w-full border rounded px-3 py-2"
-              />
+              >
+                <option value="">Select a sector</option>
+                {SECTORS.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-sm font-medium">Location</label>

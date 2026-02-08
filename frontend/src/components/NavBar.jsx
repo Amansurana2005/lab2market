@@ -45,13 +45,35 @@ export default function Navbar() {
             </Link>
           )}
           {user && user.role === "investor" && (
+            <>
+              <Link
+                to="/interested-projects"
+                className={
+                  location.pathname === "/interested-projects" ? "font-bold" : ""
+                }
+              >
+                Interested Projects
+              </Link>
+              <Link
+                to="/problems"
+                className={location.pathname === "/problems" ? "font-bold" : ""}
+              >
+                Browse Problems
+              </Link>
+              <Link
+                to="/my-problems"
+                className={location.pathname === "/my-problems" ? "font-bold" : ""}
+              >
+                My Problems
+              </Link>
+            </>
+          )}
+          {user && user.role === "researcher" && (
             <Link
-              to="/interested-projects"
-              className={
-                location.pathname === "/interested-projects" ? "font-bold" : ""
-              }
+              to="/problems"
+              className={location.pathname === "/problems" ? "font-bold" : ""}
             >
-              Interested Projects
+              Browse Problems
             </Link>
           )}
           {/* Explore Projects removed (redundant) */}

@@ -35,3 +35,38 @@ exports.getMyProblems = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.updateProblem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const problem = await Problem.findById(id);
+    if (!problem) return res.status(404).json({ message: "Problem not found" });
+    if (problem.createdBy.toString() !== req.user.id)
+      return res.status(403).json({ message: "Not authorized" });
+    Object.assign(problem, req.body);
+    await problem.save();
+    const updated = await Problem.findById(id).populate(
+      "createdBy",
+      "name role"
+    );
+    res.json(updated);
+  } catch (err) {
+    console.error("updateProblem error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.deleteProblem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const problem = await Problem.findById(id);
+    if (!problem) return res.status(404).json({ message: "Problem not found" });
+    if (problem.createdBy.toString() !== req.user.id)
+      return res.status(403).json({ message: "Not authorized" });
+    await Problem.findByIdAndDelete(id);
+    res.json({ message: "Problem deleted" });
+  } catch (err) {
+    console.error("deleteProblem error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
