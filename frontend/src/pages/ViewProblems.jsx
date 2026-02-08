@@ -169,7 +169,6 @@ export default function ViewProblems() {
                 </div>
               </div>
             </div>
-            </div>
           )}
         </div>
       </div>
