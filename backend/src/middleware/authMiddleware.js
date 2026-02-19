@@ -1,3 +1,17 @@
+/*
+Temporarily disabled JWT verification middleware for curated consultancy model.
+Original implementation is preserved below. The middleware currently allows
+requests to proceed and marks the user as a guest. Restore JWT verification
+to re-enable protected endpoints.
+*/
+
+module.exports = function (req, res, next) {
+  // Mark requests as coming from a guest user while auth is disabled
+  req.user = { id: null, role: "guest" };
+  next();
+};
+
+/* Original implementation:
 const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
@@ -19,3 +33,4 @@ module.exports = function (req, res, next) {
     res.status(401).json({ message: "Token invalid" });
   }
 };
+*/

@@ -1,3 +1,17 @@
+/*
+Temporarily disabled authentication controllers for curated consultancy model.
+Original implementations are preserved below for reactivation when needed.
+*/
+
+exports.register = async (_req, res) => {
+  res.status(503).json({ message: "Registration temporarily disabled for curated consultancy model." });
+};
+
+exports.login = async (_req, res) => {
+  res.status(503).json({ message: "Login temporarily disabled for curated consultancy model." });
+};
+
+/*
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -63,6 +77,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Login failed" });
   }
 };
+*/
 
 
 exports.updateProfile = async (req, res) => {

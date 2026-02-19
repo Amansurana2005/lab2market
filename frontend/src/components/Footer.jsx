@@ -23,20 +23,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/problems" className="hover:text-white transition">
-                  Browse Problems
-                </Link>
-              </li>
-              <li>
                 <Link to="/contact" className="hover:text-white transition">
                   Contact Us
                 </Link>
               </li>
-              <li>
-                <Link to="/dashboard" className="hover:text-white transition">
-                  Dashboard
-                </Link>
-              </li>
+              {/* Temporarily removed public browsing and dashboard links. */}
             </ul>
           </div>
 
