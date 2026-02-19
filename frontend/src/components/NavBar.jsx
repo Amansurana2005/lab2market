@@ -23,16 +23,16 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-3">
-          {/* Primary actions for consultancy mode. Handlers intentionally empty. */}
+          {/* Primary actions for consultancy mode */}
           <button
-            onClick={() => {}}
+            onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
             className="rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-2 text-white font-medium hover:shadow-lg transform hover:scale-105 transition duration-200"
           >
             Submit Requirement
           </button>
 
           <button
-            onClick={() => {}}
+            onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
             className="rounded-lg border-2 border-blue-600 px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 transition duration-200"
           >
             Join as Partner

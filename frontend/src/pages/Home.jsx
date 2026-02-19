@@ -30,14 +30,14 @@ export default function Home() {
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => {}}
+              onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
               className="px-8 py-3 text-lg rounded-lg bg-white text-[#1f66ca] font-semibold shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
             >
               Submit Technical Requirement
             </button>
 
             <button
-              onClick={() => {}}
+              onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
               className="px-8 py-3 text-lg rounded-lg bg-white/20 backdrop-blur-sm border-2 border-white text-white font-semibold hover:bg-white/30 transition duration-300"
             >
               Join as Research Partner
