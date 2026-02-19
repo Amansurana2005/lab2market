@@ -11,7 +11,7 @@ export default function Footer() {
               lab2market
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed">
-              Connecting industry challenges with academic expertise. Empowering institutions to solve real-world problems.
+              Structured facilitation between industry and academic researchers. Real problems. Real expertise. Real collaboration.
             </p>
           </div>
 
@@ -24,7 +24,7 @@ export default function Footer() {
                   to="/" 
                   className="text-gray-400 hover:text-blue-400 transition duration-200 font-medium"
                 >
-                  → Home
+                  Home
                 </Link>
               </li>
               <li>
@@ -32,25 +32,38 @@ export default function Footer() {
                   to="/contact" 
                   className="text-gray-400 hover:text-cyan-400 transition duration-200 font-medium"
                 >
-                  → Contact
+                  Contact
                 </Link>
               </li>
-              {/* Temporarily removed public browsing and dashboard links. */}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact & Legal */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Get in Touch</h4>
-            <p className="text-sm text-gray-400 mb-3 leading-relaxed">
-              Questions? Our team is here to help.
-            </p>
-            <a
-              href="mailto:amansurana5454@gmail.com"
-              className="inline-block px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition duration-200"
-            >
-              Send Email
-            </a>
+            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Contact & Legal</h4>
+            <div className="space-y-3 text-sm">
+              <p className="text-gray-400">
+                <strong>Email:</strong>{" "}
+                <a 
+                  href="mailto:amansurana5454@gmail.com" 
+                  className="text-blue-400 hover:text-blue-300 transition"
+                >
+                  amansurana5454@gmail.com
+                </a>
+              </p>
+              <div className="space-y-2 text-gray-400">
+                <p>
+                  <a href="#" className="text-blue-400 hover:text-blue-300 transition text-xs">
+                    Terms & Conditions
+                  </a>
+                </p>
+                <p>
+                  <a href="#" className="text-blue-400 hover:text-blue-300 transition text-xs">
+                    Privacy Policy
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -63,7 +76,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-xs text-gray-600 text-center font-light">
-            © {new Date().getFullYear()} lab2market. All rights reserved. | <span className="text-cyan-600">Curated Industry-Academia Partnerships</span>
+            © {new Date().getFullYear()} lab2market. All rights reserved.
           </p>
         </div>
       </div>
