@@ -14,19 +14,20 @@
   "description": "",
   "dependencies": {
     "@sentry/node": "^8.0.0",
-    "express-rate-limit": "^6.7.0",
-    "helmet": "^7.0.0",
-    "express-validator": "^7.0.1",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^6.7.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.0.2"
+    "mongoose": "^9.0.2",
+    "nodemailer": "^8.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",
-    "vitest": "^0.34.6",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "vitest": "^0.34.6"
   }
 }

@@ -6,23 +6,30 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       const response = await fetch("/api/facilitation/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      
       if (response.ok) {
         setSuccess(true);
         setForm({ name: "", email: "", message: "" });
         setTimeout(() => setSuccess(false), 5000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || "Failed to send message. Please try again.");
       }
     } catch (err) {
       console.error("Contact form error:", err);
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -43,8 +50,15 @@ export default function Contact() {
         <div className="max-w-2xl mx-auto">
           {success && (
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-6px text-green-800 text-sm">
-              <div className="font-semibold mb-1">Message sent successfully</div>
-              <p>We'll respond within 2 business days.</p>
+              <div className="font-semibold mb-1">✓ Message sent successfully</div>
+              <p>Thank you for reaching out. We'll respond within 2 business days.</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-6px text-red-800 text-sm">
+              <div className="font-semibold mb-1">✗ Error</div>
+              <p>{error}</p>
             </div>
           )}
 

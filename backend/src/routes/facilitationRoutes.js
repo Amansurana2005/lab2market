@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const nodemailer = require("nodemailer");
 const IndustryRequest = require("../models/IndustryRequest");
 const Researcher = require("../models/Researcher");
 const ContactMessage = require("../models/ContactMessage");
@@ -78,7 +79,7 @@ router.post("/register-researcher", async (req, res) => {
 });
 
 // POST /api/facilitation/contact
-// General contact form submission
+// General contact form submission with email notification
 router.post("/contact", async (req, res) => {
   try {
     const { name, email, message } = req.body;
@@ -91,17 +92,50 @@ router.post("/contact", async (req, res) => {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
+    // 1. Save to MongoDB
     const contactMessage = new ContactMessage({
       name,
       email,
       message,
     });
-
     await contactMessage.save();
-    res.status(201).json({ message: "Message received successfully" });
+
+    // 2. Setup Email Transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    // 3. Send Email Notification
+    const mailOptions = {
+      from: `"Lab2Market Contact" <${process.env.EMAIL_USER}>`,
+      to: "amansurana5454@gmail.com",
+      subject: "New Contact Submission from lab2market",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h3 style="color: #0F172A;">New Contact Submission</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+          <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+          <p><strong>Message:</strong></p>
+          <p style="white-space: pre-wrap; background: #F8FAFC; padding: 1rem; border-radius: 4px;">${message}</p>
+          <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+          <p style="font-size: 0.9rem; color: #666;">
+            <em>This message was submitted via the lab2market contact form.</em>
+          </p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json({ success: true, message: "Message received successfully. We'll be in touch soon." });
   } catch (err) {
     console.error("Error submitting contact message:", err);
-    res.status(500).json({ error: "Failed to submit message" });
+    res.status(500).json({ error: "Failed to submit message. Please try again." });
   }
 });
 
