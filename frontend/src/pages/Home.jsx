@@ -1,6 +1,6 @@
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   useEffect(() => {
@@ -16,243 +16,185 @@ export default function Home() {
       <Navbar />
 
       {/* Hero */}
-      <section className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-hero-gradient px-6 text-center relative overflow-hidden">
-        <div className="max-w-4xl text-white relative z-10 fade-in">
-          <div className="badge blue mb-4 inline-block">Facilitated Industry–Research Collaboration</div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Structured Industry–Research Collaboration for Real Technical Problems
+      <section className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-bg px-6 text-center border-b border-border">
+        <div className="max-w-3xl w-full mx-auto fade-in">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary mb-4 leading-tight">
+            Structured Industry–Research Collaboration
           </h1>
-
-          <p className="mt-6 text-lg md:text-xl text-blue-50 leading-relaxed max-w-3xl mx-auto">
-            We review every requirement, identify suitable researchers, and facilitate structured introductions within 3–7 days.
+          <p className="text-base md:text-lg text-secondary mb-6 max-w-2xl mx-auto">
+            We review technical requirements, identify relevant expertise, and facilitate structured introductions for direct engagement.
           </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
-              onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
-              className="px-8 py-3 text-lg rounded-lg bg-white text-[#1f66ca] font-semibold shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
+              onClick={() => window.open('https://forms.gle/3oXdVdDcPJASJzgL6', '_blank')}
+              className="btn-primary"
             >
               Submit Technical Requirement
             </button>
-
             <button
               onClick={() => window.open('https://forms.gle/QtyzTMCSaDqtt7Nb7', '_blank')}
-              className="px-8 py-3 text-lg rounded-lg bg-white/20 backdrop-blur-sm border-2 border-white text-white font-semibold hover:bg-white/30 transition duration-300"
+              className="btn-secondary"
             >
               Join as Research Partner
             </button>
           </div>
+          <p className="text-xs text-gray-500 mt-4">Independent review. Curated alignment. Transparent process.</p>
         </div>
       </section>
 
-      {/* Process / 3 Steps */}
-      <section className="py-16 px-6 bg-white fade-in delay-100">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="badge green inline-block mb-3">How It Works</div>
-            <h2>Our Three-Step Process</h2>
-            <p className="text-lg text-gray-600 mt-3">A structured approach to meaningful collaboration</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {/* Step 1 */}
-            <div className="card p-8 fade-in delay-150">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mb-4">1</div>
-              <h3 className="text-xl font-semibold mb-3">Submit Structured Requirement</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Provide a clear technical problem statement with expected outcomes and constraints.</p>
-            </div>
-
-            {/* Arrow */}
-            <div className="hidden sm:flex items-center justify-center fade-in delay-150">
-              <div className="text-3xl text-gray-300">→</div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="card p-8 fade-in delay-200">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mb-4">2</div>
-              <h3 className="text-xl font-semibold mb-3">Review & Curated Matching</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Our team evaluates the requirement and shortlists relevant researchers based on expertise and suitability.</p>
-              <div className="mt-4 p-3 bg-green-50 rounded-lg text-xs text-green-700 font-medium">
-                ✓ 3–7 days review
-              </div>
-            </div>
-
-            {/* Arrow */}
-            <div className="hidden sm:flex items-center justify-center fade-in delay-200">
-              <div className="text-3xl text-gray-300">→</div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="card p-8 fade-in delay-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mb-4">3</div>
-              <h3 className="text-xl font-semibold mb-3">Structured Introduction</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">We facilitate a formal introduction so both parties can directly discuss scope, timelines, and engagement terms.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quality & Transparency */}
-      <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 fade-in delay-200">
+      {/* 3-Step Process */}
+      <section className="py-12 px-6 bg-white border-b border-border fade-in delay-100">
         <div className="max-w-4xl mx-auto">
-          <div className="card p-10 border-l-4 border-l-blue-500">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">✓ Quality & Transparency</h3>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              All submissions are reviewed before being shared. We maintain structured communication, transparent processes, and respect for both industry and academic stakeholders.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Curated Matching</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Verified Experts</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Clear Scope</span>
-              </div>
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-semibold text-primary mb-2">How the Facilitation Process Works</h2>
+            <p className="text-base text-secondary">A clear, structured process for credible collaboration</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="card p-4 text-center">
+              <div className="step-number">01</div>
+              <h3 className="text-sm font-semibold text-primary mt-2 mb-1">Structured Intake</h3>
+              <p className="text-xs text-secondary">We receive technical requirements from industry and onboarding requests from researchers.</p>
+            </div>
+            <div className="card p-4 text-center">
+              <div className="step-number">02</div>
+              <h3 className="text-sm font-semibold text-primary mt-2 mb-1">Independent Review</h3>
+              <p className="text-xs text-secondary">Each submission is evaluated for clarity, scope, and suitability.</p>
+            </div>
+            <div className="card p-4 text-center">
+              <div className="step-number">03</div>
+              <h3 className="text-sm font-semibold text-primary mt-2 mb-1">Curated Alignment</h3>
+              <p className="text-xs text-secondary">Relevant matches are identified based on domain expertise and project requirements.</p>
+            </div>
+            <div className="card p-4 text-center">
+              <div className="step-number">04</div>
+              <h3 className="text-sm font-semibold text-primary mt-2 mb-1">Structured Introduction</h3>
+              <p className="text-xs text-secondary">We facilitate formal introductions for direct discussion between both parties.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Role */}
+      <section className="py-8 px-6 bg-bg border-b border-border">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-xl font-semibold text-primary mb-2">Our Role</h2>
+          <p className="text-sm text-secondary">We operate as an independent facilitator of industry–research collaboration. We do not function as an open marketplace. All submissions are reviewed before being shared.</p>
+        </div>
+      </section>
+
+      {/* Who We Work With */}
+      <section className="py-12 px-6 bg-bg border-b border-border fade-in delay-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-semibold text-primary mb-2">Who We Work With</h2>
+            <p className="text-base text-secondary">We facilitate collaboration between credible industry partners and academic researchers.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="card p-6">
+              <h3 className="text-lg font-semibold text-primary mb-2">Industry & Startups</h3>
+              <ul className="list-disc pl-5 text-sm text-secondary space-y-2">
+                <li>Defined technical requirements</li>
+                <li>Applied research collaboration</li>
+                <li>Process and product development support</li>
+                <li>Structured expert identification</li>
+              </ul>
+            </div>
+            <div className="card p-6">
+              <h3 className="text-lg font-semibold text-primary mb-2">Researchers & Academics</h3>
+              <ul className="list-disc pl-5 text-sm text-secondary space-y-2">
+                <li>Structured industry problem statements</li>
+                <li>Applied collaboration opportunities</li>
+                <li>Direct engagement with organizations</li>
+                <li>Transparent facilitation process</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
       {/* Why Not Direct Outreach */}
-      <section className="py-16 px-6 bg-white fade-in delay-300">
+      <section className="py-12 px-6 bg-white border-b border-border fade-in delay-300">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2>Why Not Direct Outreach?</h2>
-            <p className="text-lg text-gray-600 mt-3">The hidden challenges companies face when contacting researchers directly</p>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-semibold text-primary mb-2">Why Not Direct Outreach?</h2>
+            <p className="text-base text-secondary">Why companies and researchers benefit from structured facilitation</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex gap-4 fade-in delay-300">
-              <div className="text-3xl text-blue-500 flex-shrink-0">→</div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Identifying the right researcher takes time</h3>
-                <p className="text-gray-600 text-sm">Finding specialists in your domain requires extensive research and networking.</p>
-              </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-primary mb-1">Identifying the right researcher is slow</h3>
+              <p className="text-sm text-secondary">Finding credible, relevant expertise requires time and networks.</p>
             </div>
-
-            <div className="flex gap-4 fade-in delay-350">
-              <div className="text-3xl text-blue-500 flex-shrink-0">→</div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Cold outreach often results in low response</h3>
-                <p className="text-gray-600 text-sm">Researchers receive multiple inquiries daily and may not prioritize unsolicited requests.</p>
-              </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-primary mb-1">Cold outreach has low response rates</h3>
+              <p className="text-sm text-secondary">Researchers are selective and may not prioritize unsolicited requests.</p>
             </div>
-
-            <div className="flex gap-4 fade-in delay-400">
-              <div className="text-3xl text-blue-500 flex-shrink-0">→</div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">We pre-screen submissions to ensure seriousness</h3>
-                <p className="text-gray-600 text-sm">Not all inquiries are well-scoped or viable. We filter and validate before sharing.</p>
-              </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-primary mb-1">We pre-screen for seriousness</h3>
+              <p className="text-sm text-secondary">Not all inquiries are viable. We filter and validate before sharing.</p>
             </div>
-
-            <div className="flex gap-4 fade-in delay-450">
-              <div className="text-3xl text-blue-500 flex-shrink-0">→</div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Structured introductions reduce friction</h3>
-                <p className="text-gray-600 text-sm">We provide context, expectations, and facilitate clearer communication from the start.</p>
-              </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-primary mb-1">Structured introductions reduce friction</h3>
+              <p className="text-sm text-secondary">We provide context and expectations for clear communication from the start.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Partner With Us */}
-      <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 fade-in delay-400">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2>Why Partner With Us</h2>
-            <p className="text-lg text-gray-600 mt-3">Clear value for both industry and academia</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* For Industry */}
-            <div className="card p-8 fade-in delay-450">
-              <div className="text-4xl mb-4">🏢</div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900">For Industry & Startups</h3>
-              <ul className="space-y-3 text-gray-700 text-sm">
-                <li className="flex items-start gap-3">
-                  <span className="text-green-500 font-bold mt-0.5">•</span>
-                  <span>Structured expert identification without long-term hiring commitment</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-500 font-bold mt-0.5">•</span>
-                  <span>Reduced discovery time — we handle researcher vetting</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-500 font-bold mt-0.5">•</span>
-                  <span>NDA-supported introductions and formal engagement terms</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-500 font-bold mt-0.5">•</span>
-                  <span>Flexible collaboration models (consultancy, projects, research)</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* For Researchers */}
-            <div className="card p-8 fade-in delay-500">
-              <div className="text-4xl mb-4">🎓</div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900">For Researchers & Academics</h3>
-              <ul className="space-y-3 text-gray-700 text-sm">
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold mt-0.5">•</span>
-                  <span>Access to real industry problems aligned with your research</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold mt-0.5">•</span>
-                  <span>Curated serious requests only — no low-quality inquiries</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold mt-0.5">•</span>
-                  <span>Direct engagement with industry decision-makers</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold mt-0.5">•</span>
-                  <span>Transparent facilitation process with clear expectations</span>
-                </li>
-              </ul>
-            </div>
+      {/* Transparency & Process */}
+      <section className="py-12 px-6 bg-bg border-b border-border fade-in delay-400">
+        <div className="max-w-4xl mx-auto">
+          <div className="card p-8">
+            <h3 className="text-xl font-semibold text-primary mb-3">Transparency & Process</h3>
+            <ul className="list-disc pl-5 text-sm text-secondary space-y-2">
+              <li>Every submission is reviewed by our team before matching</li>
+              <li>No open marketplace—no unsolicited outreach or spam</li>
+              <li>Structured, transparent communication at every step</li>
+              <li>Clear scope and expectations for all parties</li>
+            </ul>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-6 bg-white fade-in delay-500">
+      <section className="py-12 px-6 bg-white fade-in delay-500">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h2>Frequently Asked Questions</h2>
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-semibold text-primary mb-2">Frequently Asked Questions</h2>
           </div>
-
-          <div className="space-y-6">
-            {/* FAQ 1 */}
-            <div className="card p-6 fade-in delay-500">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Is this an open marketplace?</h3>
-              <p className="text-gray-700 text-sm">No. All submissions are reviewed before matching. We maintain a curated platform to ensure quality for both parties.</p>
-            </div>
-
-            {/* FAQ 2 */}
-            <div className="card p-6 fade-in delay-550">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Do you guarantee project success?</h3>
-              <p className="text-gray-700 text-sm">We facilitate structured introductions and initial discussions. Final engagement terms, scope, and success metrics are decided directly by both parties.</p>
-            </div>
-
-            {/* FAQ 3 */}
-            <div className="card p-6 fade-in delay-600">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Is there a facilitation fee?</h3>
-              <p className="text-gray-700 text-sm">A structured introduction fee may apply after review and matching. Details will be communicated during the process.</p>
-            </div>
+          <div>
+            {[
+              {
+                q: 'Is this an open marketplace?',
+                a: 'No. All submissions are reviewed before matching.'
+              },
+              {
+                q: 'Do you guarantee project outcomes?',
+                a: 'We facilitate introductions. Execution terms are decided directly between the parties involved.'
+              },
+              {
+                q: 'Is there a facilitation fee?',
+                a: 'A structured introduction fee may apply after review.'
+              }
+            ].map((item, idx) => (
+              <AccordionItem key={idx} question={item.q} answer={item.a} />
+            ))}
           </div>
         </div>
       </section>
 
       <Footer />
     </>
+  );
+}
+
+function AccordionItem({ question, answer }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="faq-accordion">
+      <div className="faq-question" onClick={() => setOpen((s) => !s)}>
+        {question}
+      </div>
+      {open && <div className="faq-answer">{answer}</div>}
+    </div>
   );
 }
