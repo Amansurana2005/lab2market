@@ -1,9 +1,19 @@
 @import "tailwindcss";
 
+:root {
+  --primary: #0F172A;
+  --accent: #1D4ED8;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E2E8F0;
+  --text-primary: #111827;
+  --text-secondary: #475569;
+}
+
 body {
   font-family: 'Inter', 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: #F8FAFC;
-  color: #111827;
+  background: var(--bg);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
 }

@@ -62,6 +62,9 @@ app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 */
 
+// Facilitation routes (for structured industry-research collaboration)
+app.use("/api/facilitation", require("./routes/facilitationRoutes"));
+
 // Keep problem routes active (read-only use may be restored as needed)
 app.use("/api/problems", require("./routes/problemRoutes"));
 
