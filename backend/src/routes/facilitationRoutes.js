@@ -78,81 +78,126 @@ router.post("/register-researcher", async (req, res) => {
   }
 });
 
+// Limits for contact form (prevent abuse and oversized payloads)
+const CONTACT_LIMITS = {
+  name: 200,
+  email: 320,
+  message: 10000,
+};
+
+// Escape HTML for safe inclusion in email body
+function escapeHtml(text) {
+  if (typeof text !== "string") return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // POST /api/facilitation/contact
-// General contact form submission with email notification
+// Saves to MongoDB first, then sends email notification. Message is never lost.
 router.post("/contact", async (req, res) => {
+  let savedId = null;
+
   try {
-    const { name, email, message } = req.body;
+    const raw = req.body || {};
+    const name = typeof raw.name === "string" ? raw.name.trim() : "";
+    const email = typeof raw.email === "string" ? raw.email.trim() : "";
+    const message = typeof raw.message === "string" ? raw.message.trim() : "";
 
     // Validation
     if (!validateRequired([name, email, message])) {
-      return res.status(400).json({ error: "All fields are required" });
+      return res.status(400).json({ error: "All fields are required." });
     }
     if (!validateEmail(email)) {
-      return res.status(400).json({ error: "Invalid email format" });
+      return res.status(400).json({ error: "Please enter a valid email address." });
+    }
+    if (name.length > CONTACT_LIMITS.name) {
+      return res.status(400).json({ error: `Name must be at most ${CONTACT_LIMITS.name} characters.` });
+    }
+    if (email.length > CONTACT_LIMITS.email) {
+      return res.status(400).json({ error: "Email address is too long." });
+    }
+    if (message.length > CONTACT_LIMITS.message) {
+      return res.status(400).json({ error: `Message must be at most ${CONTACT_LIMITS.message} characters.` });
     }
 
-    // 1. Save to MongoDB
-    const contactMessage = new ContactMessage({
-      name,
-      email,
-      message,
-    });
+    // 1. Always save to MongoDB first (message is never lost)
+    const contactMessage = new ContactMessage({ name, email, message });
     await contactMessage.save();
+    savedId = contactMessage._id;
 
-    // 2. Email notification – require env so we fail fast with a clear log
+    // 2. Send email notification (best-effort; do not fail the request)
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const notificationTo = process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com";
+    let emailSent = false;
 
-    if (!emailUser || !emailPass) {
-      console.error(
-        "Contact form: email not configured. Set EMAIL_USER and EMAIL_PASS in backend .env (use Gmail App Password). Message was saved to DB."
+    if (emailUser && emailPass) {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: { user: emailUser, pass: emailPass },
+        });
+
+        const safeName = escapeHtml(name);
+        const safeEmail = escapeHtml(email);
+        const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+
+        await transporter.sendMail({
+          from: `"Lab2Market Contact" <${emailUser}>`,
+          to: notificationTo,
+          subject: "New Contact Submission from lab2market",
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h3 style="color: #0F172A;">New Contact Submission</h3>
+              <p><strong>Name:</strong> ${safeName}</p>
+              <p><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+              <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+              <p><strong>Message:</strong></p>
+              <p style="white-space: pre-wrap; background: #F8FAFC; padding: 1rem; border-radius: 4px;">${safeMessage}</p>
+              <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+              <p style="font-size: 0.9rem; color: #666;">
+                <em>This message was submitted via the lab2market contact form. ID: ${savedId}</em>
+              </p>
+            </div>
+          `,
+        });
+        emailSent = true;
+      } catch (mailErr) {
+        console.error("Contact form: email notification failed (message was saved):", mailErr.message);
+        if (mailErr.code === "EAUTH" || mailErr.responseCode === 535) {
+          console.error(
+            "Gmail auth failed: use an App Password. See https://myaccount.google.com/apppasswords"
+          );
+        }
+      }
+    } else {
+      console.warn(
+        "Contact form: EMAIL_USER/EMAIL_PASS not set. Message saved to DB; no email sent. Set env for notifications."
       );
-      return res.status(500).json({
-        error: "Email delivery is not configured. Your message was saved; we will follow up.",
-      });
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: emailUser,
-        pass: emailPass,
-      },
+    return res.status(201).json({
+      success: true,
+      emailSent,
+      message: "Message received successfully. We'll be in touch soon.",
+      id: String(savedId),
     });
-
-    const mailOptions = {
-      from: `"Lab2Market Contact" <${emailUser}>`,
-      to: notificationTo,
-      subject: "New Contact Submission from lab2market",
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <h3 style="color: #0F172A;">New Contact Submission</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-          <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
-          <p><strong>Message:</strong></p>
-          <p style="white-space: pre-wrap; background: #F8FAFC; padding: 1rem; border-radius: 4px;">${message}</p>
-          <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
-          <p style="font-size: 0.9rem; color: #666;">
-            <em>This message was submitted via the lab2market contact form.</em>
-          </p>
-        </div>
-      `,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(201).json({ success: true, message: "Message received successfully. We'll be in touch soon." });
   } catch (err) {
-    console.error("Error submitting contact message:", err);
-    if (err.code === "EAUTH" || err.responseCode === 535) {
-      console.error(
-        "Gmail auth failed: use an App Password (not your normal password). See https://myaccount.google.com/apppasswords"
-      );
+    console.error("Error saving contact message:", err);
+    // Only DB or validation issues reach here; email failures are caught above
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message || "Invalid data." });
     }
-    res.status(500).json({ error: "Failed to submit message. Please try again." });
+    if (err.code === 11000) {
+      return res.status(409).json({ error: "A similar message was already submitted." });
+    }
+    return res.status(500).json({
+      error: "We couldn't save your message right now. Please try again or email us directly.",
+    });
   }
 });
 

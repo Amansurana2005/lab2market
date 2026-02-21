@@ -2,6 +2,8 @@ import { useState } from "react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 
+const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
+
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -12,21 +14,35 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
+    };
+
     try {
-      const response = await fetch("/api/facilitation/contact", {
+      const response = await fetch(`${API_BASE}/facilitation/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
-      
-      if (response.ok) {
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
         setSuccess(true);
         setForm({ name: "", email: "", message: "" });
         setTimeout(() => setSuccess(false), 5000);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to send message. Please try again.");
+        return;
       }
+
+      setError(
+        data.error ||
+          (response.status === 400 && "Please fill all fields correctly.") ||
+          (response.status >= 500 && "Something went wrong. Please try again or email us directly.") ||
+          "Failed to send message. Please try again."
+      );
     } catch (err) {
       console.error("Contact form error:", err);
       setError("Network error. Please check your connection and try again.");
@@ -68,6 +84,7 @@ export default function Contact() {
               <input
                 required
                 type="text"
+                maxLength={200}
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full border border-border rounded-6px px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
@@ -80,6 +97,7 @@ export default function Contact() {
               <input
                 required
                 type="email"
+                maxLength={320}
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full border border-border rounded-6px px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
@@ -91,12 +109,14 @@ export default function Contact() {
               <label className="block text-sm font-medium text-primary mb-2">Message</label>
               <textarea
                 required
+                maxLength={10000}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="w-full border border-border rounded-6px px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
                 rows={6}
                 placeholder="Your message..."
               />
+              <p className="mt-1 text-xs text-gray-500">{form.message.length}/10000 characters</p>
             </div>
 
             <button
