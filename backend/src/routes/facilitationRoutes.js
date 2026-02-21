@@ -96,6 +96,17 @@ function escapeHtml(text) {
     .replace(/'/g, "&#39;");
 }
 
+// GET /api/facilitation/contact-email-status
+// Lets you verify email env is set on the server (e.g. on Render). No secrets returned.
+router.get("/contact-email-status", (req, res) => {
+  const hasUser = Boolean(process.env.EMAIL_USER && process.env.EMAIL_USER.trim());
+  const hasPass = Boolean(process.env.EMAIL_PASS && process.env.EMAIL_PASS.trim());
+  res.json({
+    emailConfigured: hasUser && hasPass,
+    notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com",
+  });
+});
+
 // POST /api/facilitation/contact
 // Saves to MongoDB first, then sends email notification. Message is never lost.
 router.post("/contact", async (req, res) => {
@@ -130,25 +141,31 @@ router.post("/contact", async (req, res) => {
     savedId = contactMessage._id;
 
     // 2. Send email notification (best-effort; do not fail the request)
-    const emailUser = process.env.EMAIL_USER;
-    const emailPass = process.env.EMAIL_PASS;
-    const notificationTo = process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com";
+    const emailUser = (process.env.EMAIL_USER || "").trim();
+    const emailPass = (process.env.EMAIL_PASS || "").trim().replace(/\s/g, ""); // Gmail app password often pasted with spaces
+    const notificationTo = (process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com").trim();
     let emailSent = false;
 
     if (emailUser && emailPass) {
       try {
+        // Explicit Gmail SMTP (works reliably on Render and other hosts)
         const transporter = nodemailer.createTransport({
-          service: "gmail",
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
           auth: { user: emailUser, pass: emailPass },
+          tls: { rejectUnauthorized: true },
         });
 
         const safeName = escapeHtml(name);
         const safeEmail = escapeHtml(email);
         const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
 
+        console.log("Contact form: sending notification to", notificationTo);
         await transporter.sendMail({
           from: `"Lab2Market Contact" <${emailUser}>`,
           to: notificationTo,
+          replyTo: email,
           subject: "New Contact Submission from lab2market",
           html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -166,17 +183,19 @@ router.post("/contact", async (req, res) => {
           `,
         });
         emailSent = true;
+        console.log("Contact form: email sent successfully to", notificationTo);
       } catch (mailErr) {
-        console.error("Contact form: email notification failed (message was saved):", mailErr.message);
+        console.error("Contact form: email failed (message was saved). Code:", mailErr.code, "Message:", mailErr.message);
         if (mailErr.code === "EAUTH" || mailErr.responseCode === 535) {
-          console.error(
-            "Gmail auth failed: use an App Password. See https://myaccount.google.com/apppasswords"
-          );
+          console.error("Use a Gmail App Password (not your normal password): https://myaccount.google.com/apppasswords");
+        }
+        if (mailErr.code === "ECONNREFUSED" || mailErr.code === "ETIMEDOUT") {
+          console.error("Network/SMTP blocked? Try from a different host or check firewall.");
         }
       }
     } else {
       console.warn(
-        "Contact form: EMAIL_USER/EMAIL_PASS not set. Message saved to DB; no email sent. Set env for notifications."
+        "Contact form: EMAIL_USER or EMAIL_PASS missing. Message saved to DB; no email. Set both in env (e.g. Render dashboard)."
       );
     }
 

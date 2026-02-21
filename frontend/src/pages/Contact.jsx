@@ -8,6 +8,7 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [emailNotificationSent, setEmailNotificationSent] = useState(true); // assume yes unless backend says otherwise
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -32,8 +33,9 @@ export default function Contact() {
 
       if (response.ok && data.success) {
         setSuccess(true);
+        setEmailNotificationSent(data.emailSent !== false);
         setForm({ name: "", email: "", message: "" });
-        setTimeout(() => setSuccess(false), 5000);
+        setTimeout(() => { setSuccess(false); setEmailNotificationSent(true); }, 5000);
         return;
       }
 
@@ -68,6 +70,9 @@ export default function Contact() {
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-6px text-green-800 text-sm">
               <div className="font-semibold mb-1">✓ Message sent successfully</div>
               <p>Thank you for reaching out. We'll respond within 2 business days.</p>
+              {!emailNotificationSent && (
+                <p className="mt-2 text-amber-700 text-xs">(Our team notification email could not be sent; your message was still saved.)</p>
+              )}
             </div>
           )}
 
