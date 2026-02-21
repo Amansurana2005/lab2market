@@ -100,19 +100,31 @@ router.post("/contact", async (req, res) => {
     });
     await contactMessage.save();
 
-    // 2. Setup Email Transporter
+    // 2. Email notification – require env so we fail fast with a clear log
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+    const notificationTo = process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com";
+
+    if (!emailUser || !emailPass) {
+      console.error(
+        "Contact form: email not configured. Set EMAIL_USER and EMAIL_PASS in backend .env (use Gmail App Password). Message was saved to DB."
+      );
+      return res.status(500).json({
+        error: "Email delivery is not configured. Your message was saved; we will follow up.",
+      });
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: emailUser,
+        pass: emailPass,
       },
     });
 
-    // 3. Send Email Notification
     const mailOptions = {
-      from: `"Lab2Market Contact" <${process.env.EMAIL_USER}>`,
-      to: "amansurana5454@gmail.com",
+      from: `"Lab2Market Contact" <${emailUser}>`,
+      to: notificationTo,
       subject: "New Contact Submission from lab2market",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -135,6 +147,11 @@ router.post("/contact", async (req, res) => {
     res.status(201).json({ success: true, message: "Message received successfully. We'll be in touch soon." });
   } catch (err) {
     console.error("Error submitting contact message:", err);
+    if (err.code === "EAUTH" || err.responseCode === 535) {
+      console.error(
+        "Gmail auth failed: use an App Password (not your normal password). See https://myaccount.google.com/apppasswords"
+      );
+    }
     res.status(500).json({ error: "Failed to submit message. Please try again." });
   }
 });
