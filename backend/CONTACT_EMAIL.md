@@ -4,11 +4,11 @@ If contact submissions are saved to MongoDB but you don't receive an email:
 
 ## 1. Check that the server has email configured
 
-Open in browser or curl (replace with your backend URL):
+**For this app (single service "lab2market" on Render):** your backend/API is at **https://lab2market.onrender.com**. Open:
 
-```
-GET https://YOUR-BACKEND-URL/api/facilitation/contact-email-status
-```
+**https://lab2market.onrender.com/api/facilitation/contact-email-status**
+
+(If you use a different backend URL, replace the base accordingly.)
 
 You should see `"emailConfigured": true`. If it's `false`, the server is not loading `EMAIL_USER` and `EMAIL_PASS`.
 
