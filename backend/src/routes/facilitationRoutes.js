@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const IndustryRequest = require("../models/IndustryRequest");
 const Researcher = require("../models/Researcher");
 const ContactMessage = require("../models/ContactMessage");
@@ -99,10 +100,13 @@ function escapeHtml(text) {
 // GET /api/facilitation/contact-email-status
 // Lets you verify email env is set on the server (e.g. on Render). No secrets returned.
 router.get("/contact-email-status", (req, res) => {
+  const hasResend = Boolean(process.env.RESEND_API_KEY && process.env.RESEND_API_KEY.trim());
   const hasUser = Boolean(process.env.EMAIL_USER && process.env.EMAIL_USER.trim());
   const hasPass = Boolean(process.env.EMAIL_PASS && process.env.EMAIL_PASS.trim());
+  const smtpConfigured = hasUser && hasPass;
   res.json({
-    emailConfigured: hasUser && hasPass,
+    emailConfigured: hasResend || smtpConfigured,
+    emailMethod: hasResend ? "resend" : smtpConfigured ? "smtp" : "none",
     notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com",
   });
 });
@@ -141,62 +145,81 @@ router.post("/contact", async (req, res) => {
     savedId = contactMessage._id;
 
     // 2. Send email notification (best-effort; do not fail the request)
-    const emailUser = (process.env.EMAIL_USER || "").trim();
-    const emailPass = (process.env.EMAIL_PASS || "").trim().replace(/\s/g, ""); // Gmail app password often pasted with spaces
     const notificationTo = (process.env.CONTACT_NOTIFICATION_EMAIL || "amansurana5454@gmail.com").trim();
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+    const htmlBody = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h3 style="color: #0F172A;">New Contact Submission</h3>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+        <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+        <p><strong>Message:</strong></p>
+        <p style="white-space: pre-wrap; background: #F8FAFC; padding: 1rem; border-radius: 4px;">${safeMessage}</p>
+        <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
+        <p style="font-size: 0.9rem; color: #666;">
+          <em>This message was submitted via the lab2market contact form. ID: ${savedId}</em>
+        </p>
+      </div>
+    `;
     let emailSent = false;
 
-    if (emailUser && emailPass) {
+    // Prefer Resend (HTTPS API) — works on Render; SMTP is often blocked on free tier
+    const resendKey = (process.env.RESEND_API_KEY || "").trim();
+    if (resendKey) {
       try {
-        // Explicit Gmail SMTP (works reliably on Render and other hosts)
-        const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 587,
-          secure: false,
-          auth: { user: emailUser, pass: emailPass },
-          tls: { rejectUnauthorized: true },
-        });
-
-        const safeName = escapeHtml(name);
-        const safeEmail = escapeHtml(email);
-        const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
-
-        console.log("Contact form: sending notification to", notificationTo);
-        await transporter.sendMail({
-          from: `"Lab2Market Contact" <${emailUser}>`,
-          to: notificationTo,
+        const resend = new Resend(resendKey);
+        const fromAddress = (process.env.RESEND_FROM || "Lab2Market Contact <onboarding@resend.dev>").trim();
+        console.log("Contact form: sending via Resend to", notificationTo);
+        const { error } = await resend.emails.send({
+          from: fromAddress,
+          to: [notificationTo],
           replyTo: email,
           subject: "New Contact Submission from lab2market",
-          html: `
-            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-              <h3 style="color: #0F172A;">New Contact Submission</h3>
-              <p><strong>Name:</strong> ${safeName}</p>
-              <p><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
-              <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
-              <p><strong>Message:</strong></p>
-              <p style="white-space: pre-wrap; background: #F8FAFC; padding: 1rem; border-radius: 4px;">${safeMessage}</p>
-              <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 1.5rem 0;">
-              <p style="font-size: 0.9rem; color: #666;">
-                <em>This message was submitted via the lab2market contact form. ID: ${savedId}</em>
-              </p>
-            </div>
-          `,
+          html: htmlBody,
         });
+        if (error) throw new Error(error.message);
         emailSent = true;
-        console.log("Contact form: email sent successfully to", notificationTo);
+        console.log("Contact form: email sent successfully via Resend to", notificationTo);
       } catch (mailErr) {
-        console.error("Contact form: email failed (message was saved). Code:", mailErr.code, "Message:", mailErr.message);
-        if (mailErr.code === "EAUTH" || mailErr.responseCode === 535) {
-          console.error("Use a Gmail App Password (not your normal password): https://myaccount.google.com/apppasswords");
-        }
-        if (mailErr.code === "ECONNREFUSED" || mailErr.code === "ETIMEDOUT") {
-          console.error("Network/SMTP blocked? Try from a different host or check firewall.");
-        }
+        console.error("Contact form: Resend failed (message was saved).", mailErr.message);
       }
     } else {
-      console.warn(
-        "Contact form: EMAIL_USER or EMAIL_PASS missing. Message saved to DB; no email. Set both in env (e.g. Render dashboard)."
-      );
+      // Fallback: Gmail SMTP (works locally; often blocked on Render free tier)
+      const emailUser = (process.env.EMAIL_USER || "").trim();
+      const emailPass = (process.env.EMAIL_PASS || "").trim().replace(/\s/g, "");
+      if (emailUser && emailPass) {
+        try {
+          const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: { user: emailUser, pass: emailPass },
+            tls: { rejectUnauthorized: true },
+          });
+          console.log("Contact form: sending via SMTP to", notificationTo);
+          await transporter.sendMail({
+            from: `"Lab2Market Contact" <${emailUser}>`,
+            to: notificationTo,
+            replyTo: email,
+            subject: "New Contact Submission from lab2market",
+            html: htmlBody,
+          });
+          emailSent = true;
+          console.log("Contact form: email sent successfully via SMTP to", notificationTo);
+        } catch (mailErr) {
+          console.error("Contact form: SMTP failed (message was saved). Code:", mailErr.code, "Message:", mailErr.message);
+          if (mailErr.code === "EAUTH" || mailErr.responseCode === 535) {
+            console.error("Use a Gmail App Password: https://myaccount.google.com/apppasswords");
+          }
+          if (mailErr.code === "ECONNREFUSED" || mailErr.code === "ETIMEDOUT" || mailErr.code === "ENETUNREACH") {
+            console.error("SMTP blocked on this host. Set RESEND_API_KEY to use Resend (HTTPS) instead.");
+          }
+        }
+      } else {
+        console.warn("Contact form: No RESEND_API_KEY or EMAIL_USER/EMAIL_PASS. Message saved to DB; no email.");
+      }
     }
 
     return res.status(201).json({
