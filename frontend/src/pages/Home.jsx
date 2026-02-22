@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <Navbar />
       {/* Hero */}
-      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-24 md:py-28 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+      <section className="relative flex items-center justify-center px-6 py-16 md:py-20 bg-[#F8FAFC] border-b border-[#E2E8F0]">
         <div className="w-full max-w-[800px] mx-auto text-center fade-in relative z-10">
           <h1 className="text-3xl md:text-5xl font-medium text-[#0F172A] mb-7 leading-tight tracking-tight">
             Where Industry Problems Meet Academic Expertise
@@ -38,7 +38,7 @@ export default function Home() {
       {/* Process Section */}
       <section className="py-16 px-6 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12 fade-in">
+          <div className="text-center mb-8 fade-in">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0F172A] mb-2">
               How the Facilitation Process Works
             </h2>
@@ -81,7 +81,7 @@ export default function Home() {
       {/* Who We Work With */}
       <section className="py-16 px-6 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 fade-in">
+          <div className="text-center mb-8 fade-in">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0F172A] mb-2">
               Who We Work With
             </h2>

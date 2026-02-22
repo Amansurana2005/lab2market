@@ -1,0 +1,14 @@
+---
+description: After making code changes, automatically commit and push to git without asking
+alwaysApply: true
+---
+
+# Git: Auto-push after changes
+
+When you edit, add, or delete project files:
+
+1. **Stage** the changed files (in the repo at `lab2market-main`, i.e. this project root).
+2. **Commit** with a short, clear message describing what changed.
+3. **Push** to the default remote (e.g. `origin main`) without asking the user.
+
+Do not ask "should I push?" or "would you like me to commit and push?" — just do it. Skip only if the user has no git remote, push fails due to auth, or they explicitly say not to push.

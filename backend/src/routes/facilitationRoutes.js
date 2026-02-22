@@ -11,7 +11,6 @@ const { validateEmail, validateRequired } = require("../middleware/validation");
 // Industry submits technical requirement
 router.post("/submit-requirement", async (req, res) => {
   try {
-    const { companyName, contactName, email, sector, problemDescription, timeline, ndaRequired } = req.body;
 
     // Validation
     if (!validateRequired([companyName, contactName, email, sector, problemDescription, timeline])) {
