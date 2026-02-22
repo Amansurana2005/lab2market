@@ -26,14 +26,6 @@ export default function Navbar() {
           Contact
         </Link>
       </div>
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => window.open('https://forms.gle/3oXdVdDcPJASJzgL6', '_blank')}
-          className="btn-primary text-sm"
-        >
-          Submit Requirement
-        </button>
-      </div>
     </nav>
   );
 }
