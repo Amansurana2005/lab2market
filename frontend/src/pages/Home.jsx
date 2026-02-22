@@ -1,50 +1,37 @@
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-
       {/* Hero */}
-      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-16 overflow-hidden bg-gradient-to-b from-slate-50 to-white border-b border-[#E2E8F0]">
-        <div className="max-w-3xl mx-auto text-center fade-in relative z-10">
-          <p className="text-sm font-medium text-[#1D4ED8] uppercase tracking-wider mb-4">
-            Industry–Research Facilitation
-          </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#0F172A] mb-5 leading-tight tracking-tight">
-            Structured Industry–Research Collaboration
+      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-24 md:py-28 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+        <div className="w-full max-w-[800px] mx-auto text-center fade-in relative z-10">
+          <h1 className="text-3xl md:text-5xl font-medium text-[#0F172A] mb-7 leading-tight tracking-tight">
+            Where Industry Problems Meet Academic Expertise
           </h1>
-          <p className="text-base md:text-lg text-[#475569] mb-8 max-w-2xl mx-auto leading-relaxed">
-            We review technical requirements, identify relevant expertise, and facilitate structured introductions for direct engagement.
+          <p className="text-base md:text-lg text-[#64748B] mb-10 max-w-[800px] mx-auto leading-relaxed font-normal">
+            We help MSME/ Startups find the right Researchers/ Professors to solve technical challenges. From reviewing your requirement to making the right introduction, we ensure focused and meaningful collaboration.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-7">
             <button
               onClick={() => window.open("https://forms.gle/3oXdVdDcPJASJzgL6", "_blank")}
-              className="btn-primary px-8 py-3.5 text-base font-medium rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-lg bg-[#1D4ED8] text-white shadow-sm transition-all duration-200 hover:bg-[#1E40AF] hover:shadow-md"
             >
               Submit Technical Requirement
             </button>
             <button
               onClick={() => window.open("https://forms.gle/QtyzTMCSaDqtt7Nb7", "_blank")}
-              className="btn-secondary px-8 py-3.5 text-base font-medium rounded-lg"
+              className="inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-lg border border-[#1D4ED8] text-[#1D4ED8] bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:bg-[#EFF6FF] hover:shadow-sm"
             >
               Join as Research Partner
             </button>
           </div>
-          <p className="text-xs text-slate-500 font-medium">
-            Independent review · Curated alignment · Transparent process
+          <p className="text-sm text-[#64748B] font-normal">
+            Independent review. Verified experts. Clear outcomes.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm">
-            <Link to="/for-industry" className="text-[#1D4ED8] hover:underline font-medium">
-              For Industry →
-            </Link>
-            <Link to="/for-researchers" className="text-[#1D4ED8] hover:underline font-medium">
-              For Researchers →
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -206,3 +193,4 @@ function FAQItem({ question, answer }) {
     </div>
   );
 }
+
