@@ -6,14 +6,14 @@ export default function ForResearchers() {
     <>
       <Navbar />
 
-      <section className="py-16 px-6 bg-white border-b border-border">
+      <section className="py-10 md:py-12 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-semibold text-primary mb-2">For Researchers & Academics</h1>
-          <p className="text-base text-text-secondary mb-8">Collaborative opportunities with vetted industry partners.</p>
+          <p className="text-base text-text-secondary mb-4">Collaborative opportunities with vetted industry partners.</p>
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">Types of Opportunities Shared</h2>
           <p className="text-text-secondary mb-4">We facilitate introductions for applied research and industry collaboration, including:</p>
@@ -26,7 +26,7 @@ export default function ForResearchers() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">Our Approach</h2>
           <div className="space-y-4">
@@ -46,7 +46,7 @@ export default function ForResearchers() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">Engagement Process</h2>
           <p className="text-text-secondary mb-4">Once you register and we introduce you to an opportunity:</p>
@@ -59,7 +59,7 @@ export default function ForResearchers() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">Why Register With Us</h2>
           <p className="text-text-secondary mb-4">Registration and profile creation allows us to:</p>
@@ -76,3 +76,4 @@ export default function ForResearchers() {
     </>
   );
 }
+

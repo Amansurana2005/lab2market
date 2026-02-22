@@ -36,7 +36,7 @@ export default function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="py-16 px-6 bg-white border-b border-[#E2E8F0]">
+      <section className="py-12 md:py-14 px-6 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 fade-in">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0F172A] mb-2">
@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* Who We Work With */}
-      <section className="py-16 px-6 bg-white border-b border-[#E2E8F0]">
+      <section className="py-12 md:py-14 px-6 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 fade-in">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0F172A] mb-2">
@@ -137,7 +137,7 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-6 bg-slate-50">
+      <section className="py-12 md:py-14 px-6 bg-slate-50">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10 fade-in">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0F172A] mb-2">
@@ -193,4 +193,5 @@ function FAQItem({ question, answer }) {
     </div>
   );
 }
+
 

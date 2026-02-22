@@ -6,14 +6,14 @@ export default function ForIndustry() {
     <>
       <Navbar />
 
-      <section className="py-16 px-6 bg-white border-b border-border">
+      <section className="py-10 md:py-12 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-semibold text-primary mb-2">For Industry & Startups</h1>
-          <p className="text-base text-text-secondary mb-8">Access credible academic expertise for your technical challenges.</p>
+          <p className="text-base text-text-secondary mb-4">Access credible academic expertise for your technical challenges.</p>
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">What You Can Submit</h2>
           <p className="text-text-secondary mb-4">We match industry with academic researchers for applied projects including:</p>
@@ -26,7 +26,7 @@ export default function ForIndustry() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">What Happens After Submission</h2>
           <div className="space-y-4">
@@ -46,7 +46,7 @@ export default function ForIndustry() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">Expectations</h2>
           <p className="text-text-secondary mb-4">For a successful collaboration, submissions should include:</p>
@@ -59,7 +59,7 @@ export default function ForIndustry() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">How We Add Value</h2>
           <p className="text-text-secondary mb-4">Rather than an open directory, we provide:</p>
@@ -76,3 +76,4 @@ export default function ForIndustry() {
     </>
   );
 }
+

@@ -6,14 +6,14 @@ export default function HowItWorks() {
     <>
       <Navbar />
 
-      <section className="py-16 px-6 bg-white border-b border-border">
+      <section className="py-10 md:py-12 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-semibold text-primary mb-2">Detailed Facilitation Process</h1>
-          <p className="text-base text-text-secondary mb-8">How we match credible industry challenges with academic expertise.</p>
+          <p className="text-base text-text-secondary mb-4">How we match credible industry challenges with academic expertise.</p>
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">1. Submission & Intake</h2>
           <p className="text-text-secondary mb-4">Industry partners and researchers submit structured information through our intake forms. We require:</p>
@@ -26,7 +26,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">2. Review Criteria</h2>
           <p className="text-text-secondary mb-4">Every submission is evaluated against:</p>
@@ -39,7 +39,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">3. Matching Methodology</h2>
           <p className="text-text-secondary mb-4">We use domain expertise tagging, institution knowledge, and publication alignment to identify suitable matches. Our methodology considers:</p>
@@ -52,7 +52,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">4. Introduction Process</h2>
           <p className="text-text-secondary mb-4">Once a match is confirmed, we facilitate a structured email introduction that includes:</p>
@@ -65,7 +65,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="py-8 md:py-10 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-primary mb-4">5. Confidentiality & NDA</h2>
           <p className="text-text-secondary mb-4">We understand that sensitive projects require confidentiality agreements. We facilitate NDA-based discussions and maintain secure communication channels for all sensitive information. Both parties can negotiate commercial terms privately after introduction.</p>
@@ -76,3 +76,4 @@ export default function HowItWorks() {
     </>
   );
 }
+

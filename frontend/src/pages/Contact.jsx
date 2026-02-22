@@ -57,14 +57,14 @@ export default function Contact() {
     <>
       <Navbar />
 
-      <section className="py-16 px-6 bg-white border-b border-border">
+      <section className="py-10 md:py-12 px-6 bg-white border-b border-border">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-semibold text-primary mb-2">Contact Us</h1>
           <p className="text-base text-text-secondary">Questions about our facilitation process or partnership inquiries?</p>
         </div>
       </section>
 
-      <section className="py-12 px-6 bg-white">
+      <section className="py-8 md:py-10 px-6 bg-white">
         <div className="max-w-2xl mx-auto">
           {success && (
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-6px text-green-800 text-sm">
@@ -146,3 +146,4 @@ export default function Contact() {
     </>
   );
 }
+
